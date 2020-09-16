@@ -5,18 +5,18 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "nininini"
 
 
-@app.route("/api/v1/home_lib/", methods=["GET"])
+@app.route("/api/v1/books/", methods=["GET"])
 def books_list_api_v1():
     return jsonify(books.all())
 
-@app.route("/api/v1/home_lib/<int:book_id>", methods=["GET"])
+@app.route("/api/v1/books/<int:book_id>", methods=["GET"])
 def get_book(book_id):
     book = books.get(book_id)
     if not book:
         abort(404)
     return jsonify({"book": book})
 
-@app.route("/api/v1/home_lib/", methods=["POST"])
+@app.route("/api/v1/books/", methods=["POST"])
 def create_book():
     if not request.json or not 'title' in request.json:
         abort(400)
@@ -30,21 +30,21 @@ def create_book():
     books.create(book)
     return jsonify({'book': book}), 201
 
-@app.route("/api/v1/home_lib/", methods=['OPTIONS'])
+@app.route("/api/v1/books/", methods=['OPTIONS'])
 def sort():
     sort = books.sort()  
     if not sort:
         abort(404)
     return jsonify({'sort': sort})
 
-@app.route("/api/v1/home_lib/<int:book_id>", methods=['DELETE'])
+@app.route("/api/v1/books/<int:book_id>", methods=['DELETE'])
 def delete_book(book_id):
     result = books.delete(book_id)
     if not result:
         abort(404)
     return jsonify({'result': result})
 
-@app.route("/api/v1/home_lib/<int:book_id>", methods=["PUT"])
+@app.route("/api/v1/books/<int:book_id>", methods=["PUT"])
 def update_book(book_id):
     book = books.get(book_id)
     if not book:
